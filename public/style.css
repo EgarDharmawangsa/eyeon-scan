@@ -90,7 +90,7 @@ button:hover {
 
 .result-label {
     display: none;
-    margin-top: 0.5rem;
+    margin: 0.5rem 0 0;
 }
 
 p {
