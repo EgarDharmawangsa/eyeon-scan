@@ -58,14 +58,13 @@ const startCamera = async () => {
 
         if (isMobile) {
             const backCameras = devices.filter(device =>
-                device.kind === "videoinput" && device.label.toLowerCase().includes("back")
+                device.kind === "videoinput" &&
+                device.label.toLowerCase().includes("back") &&
+                !device.label.toLowerCase().includes("wide") &&
+                !device.label.toLowerCase().includes("0.5")
             );
 
-            // Pilih kamera belakang yang bukan ultrawide
-            const mainBackCamera = backCameras.find(device =>
-                !device.label.toLowerCase().includes("wide") && 
-                !device.label.toLowerCase().includes("0.5")
-            ) || backCameras[0]; // Jika tidak ditemukan, pakai yang pertama
+            const mainBackCamera = backCameras.length > 0 ? backCameras[0] : null;
 
             if (mainBackCamera) {
                 videoConstraints = { deviceId: { exact: mainBackCamera.deviceId } };
@@ -74,7 +73,6 @@ const startCamera = async () => {
             }
         }
 
-        // Paksa resolusi tinggi agar lebih cenderung memilih kamera utama
         videoConstraints.width = { ideal: 1920 };
         videoConstraints.height = { ideal: 1080 };
 
@@ -89,7 +87,7 @@ const startCamera = async () => {
             video.play();
         };
     } catch (error) {
-        alert("Gagal mengakses kamera");
+        alert("Gagal mengakses kamera: " + error.message);
     }
 };
 
