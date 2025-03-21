@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EyeonScan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>EyeonScan</h2>
+        <h4>Scan your image.</h4>
+        <input type="file" id="imageInput" accept="image/*">
+        <img id="preview" src="" alt="Preview">
+        <button id="button-delete" class="button-delete" onclick="deleteImage()">Delete Image</button>
+        <button id="button-camera" class="button-camera" onclick="startCamera()">Open Camera</button>
+        <video id="video" class="video" autoplay playsinline></video>
+        <canvas id="canvas" class="canvas"></canvas>
+        <button id="button-capture" class="button-capture" onclick="captureImage()">Capture</button>
+        <button id="button-scan" class="button-scan" onclick="scanImage()">Scan</button>
+        <h4 id="result-label" class="result-label">Result</h5>
+        <p id="result"></p>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.0.2/tesseract.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
