@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     display: flex;
-    align-items: center;    
+    align-items: center;
     justify-content: center;
     min-height: 100vh;
     background-color: #e3e3e3;
@@ -20,6 +20,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
 }
 
 h2 {
@@ -34,13 +35,22 @@ h4 {
 input {
     width: 100%;
     max-width: 20rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
     padding: 0.5rem;
     border: black 1px solid;
     border-radius: 3px;
 }
 
-img, .video {
+.camera-input {
+    display: none;
+}
+
+.preview {
+    display: none;
+}
+
+img {
     max-width: 100%;
     height: auto;
     border: black 1px solid;
@@ -48,27 +58,25 @@ img, .video {
     margin-bottom: 1rem;
 }
 
-.canvas {
-    display: none;
-}
-
-.button-camera, .button-delete, .button-capture, .button-scan {
+button {
     width: 100%;
     max-width: 15rem;
-    padding: 0.5rem;
+    padding: 0.7rem;
     margin-bottom: 1rem;
     background-color: darkslategray;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 0.9rem;
 }
 
-.button-camera:hover, .button-capture:hover, .button-scan:hover {
-    background-color: rgb(26, 45, 45);
+button:hover {
+    background-color: rgb(30, 50, 50);
 }
 
 .button-delete {
+    display: none;
     background-color: darkred;
 }
 
@@ -76,12 +84,17 @@ img, .video {
     background-color: rgb(86, 0, 0);
 }
 
+.button-scan {
+    display: none;
+}
+
 .result-label {
-    margin: 0.5rem 0 0;
+    display: none;
+    margin-top: 0.5rem;
 }
 
 p {
-    display: block;
+    display: none;
     box-sizing: border-box;
     max-width: 100%;
     width: 100%;
@@ -93,27 +106,22 @@ p {
 
 @media (max-width: 768px) {
     .container {
-        width: 95%;
+        width: 90%;
         padding: 1rem;
         margin: 1rem auto;
     }
 
-    input {
-        max-width: 100%;
-    }
-
-    .button-camera, .button-delete, .button-capture, .button-scan {
+    input, button {
         width: 100%;
     }
 }
 
 @media (max-width: 480px) {
-    .container {
-        width: 100%;
-        margin: 0.5rem;
+    button {
+        padding: 0.6rem;
     }
 
-    .button-camera, .button-delete, .button-capture, .button-scan {
-        max-width: 100%;
+    input {
+        padding: 0.4rem;
     }
 }
