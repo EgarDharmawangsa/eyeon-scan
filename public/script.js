@@ -53,18 +53,30 @@ const startCamera = async () => {
         if (stream) return;
 
         const devices = await navigator.mediaDevices.enumerateDevices();
-        let videoConstraints = { facingMode: "user" };
+        let videoConstraints = { facingMode: "user" }; // Default ke kamera depan
         const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+
         if (isMobile) {
-            const backCamera = devices.find(device =>
+            const backCameras = devices.filter(device =>
                 device.kind === "videoinput" && device.label.toLowerCase().includes("back")
             );
-            if (backCamera) {
-                videoConstraints = { deviceId: { exact: backCamera.deviceId } };
+
+            // Pilih kamera belakang yang bukan ultrawide
+            const mainBackCamera = backCameras.find(device =>
+                !device.label.toLowerCase().includes("wide") && 
+                !device.label.toLowerCase().includes("0.5")
+            ) || backCameras[0]; // Jika tidak ditemukan, pakai yang pertama
+
+            if (mainBackCamera) {
+                videoConstraints = { deviceId: { exact: mainBackCamera.deviceId } };
             } else {
                 videoConstraints = { facingMode: "environment" };
             }
         }
+
+        // Paksa resolusi tinggi agar lebih cenderung memilih kamera utama
+        videoConstraints.width = { ideal: 1920 };
+        videoConstraints.height = { ideal: 1080 };
 
         stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints });
 
