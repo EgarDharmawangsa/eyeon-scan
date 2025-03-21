@@ -53,7 +53,7 @@ const startCamera = async () => {
         if (stream) return;
 
         const devices = await navigator.mediaDevices.enumerateDevices();
-        let videoConstraints = { facingMode: "user" }; // Default ke kamera depan
+        let videoConstraints = { facingMode: "user" };
         const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
         if (isMobile) {
@@ -64,10 +64,19 @@ const startCamera = async () => {
                 !device.label.toLowerCase().includes("0.5")
             );
 
-            const mainBackCamera = backCameras.length > 0 ? backCameras[0] : null;
+            if (backCameras.length > 1) {
+                const bestCamera = await Promise.all(backCameras.map(async camera => {
+                    const capabilities = await navigator.mediaDevices.getUserMedia({
+                        video: { deviceId: { exact: camera.deviceId } }
+                    });
+                    const settings = capabilities.getVideoTracks()[0].getSettings();
+                    return { camera, resolution: settings.width * settings.height };
+                }));
 
-            if (mainBackCamera) {
-                videoConstraints = { deviceId: { exact: mainBackCamera.deviceId } };
+                bestCamera.sort((a, b) => b.resolution - a.resolution);
+                videoConstraints = { deviceId: { exact: bestCamera[0].camera.deviceId } };
+            } else if (backCameras.length === 1) {
+                videoConstraints = { deviceId: { exact: backCameras[0].deviceId } };
             } else {
                 videoConstraints = { facingMode: "environment" };
             }
