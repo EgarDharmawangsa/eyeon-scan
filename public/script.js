@@ -55,9 +55,10 @@ captureImage = () => {
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     const imageData = canvas.toDataURL("image/png");
     preview.src = imageData;
-    preview.style.display = "block";
     video.style.display = "none";
     buttonCapture.style.display = "none";
+    preview.style.display = "block";
+    buttonDelete.style.display = "block";
 }
 
 scanImage = () => {
