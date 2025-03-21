@@ -67,10 +67,15 @@ const startCamera = async () => {
         }
 
         stream = await navigator.mediaDevices.getUserMedia({ video: videoConstraints });
+
         video.srcObject = stream;
         video.style.display = "block";
         buttonCapture.style.display = "block";
         buttonCamera.innerText = "Close Camera";
+
+        video.onloadedmetadata = () => {
+            video.play();
+        };
     } catch (error) {
         alert("Gagal mengakses kamera");
     }
@@ -89,9 +94,12 @@ const stopCamera = () => {
 buttonCamera.addEventListener("click", toggleCamera);
 
 const captureImage = () => {
+    if (!stream) return;
+
     const context = canvas.getContext("2d");
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+    canvas.width = video.videoWidth || video.clientWidth;
+    canvas.height = video.videoHeight || video.clientHeight;
+
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
     preview.src = canvas.toDataURL("image/png");
     preview.style.display = "block";
